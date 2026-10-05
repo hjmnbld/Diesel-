@@ -1,0 +1,31 @@
+site_name: Diesel技术笔记
+site_url: https://hjmnbld.github.io/Diesel-/
+
+theme:
+  name: material
+  language: zh
+
+  palette:
+    - scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        name: 切换至夜间模式
+
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        name: 切换至日间模式
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - content.code.copy
+
+nav:
+  - 首页: index.md
+  - Aim: aim.md
+  - Contribution: contribution.md
