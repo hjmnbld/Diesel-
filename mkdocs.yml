@@ -1,5 +1,6 @@
 site_name: Diesel技术笔记
 site_url: https://hjmnbld.github.io/Diesel-/
+site_description: Diesel 的个人技术笔记
 
 theme:
   name: material
@@ -10,12 +11,14 @@ theme:
       primary: teal
       accent: teal
       toggle:
+        icon: material/brightness-7
         name: 切换至夜间模式
 
     - scheme: slate
       primary: teal
       accent: teal
       toggle:
+        icon: material/brightness-4
         name: 切换至日间模式
 
   features:
@@ -27,5 +30,4 @@ theme:
 
 nav:
   - 首页: index.md
-  - Aim: aim.md
-  - Contribution: contribution.md
+  - ROS 2 节点开发: Part_of_ROS2.md
