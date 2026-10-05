@@ -1,0 +1,1884 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Diesel 的个人技术笔记">
+      
+      
+      
+        <link rel="canonical" href="https://hjmnbld.github.io/Diesel-/Part_of_ROS2/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>ROS 2 节点开发 - Diesel技术笔记</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="Diesel技术笔记" class="md-header__button md-logo" aria-label="Diesel技术笔记" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Diesel技术笔记
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ROS 2 节点开发
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="切换至夜间模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换至夜间模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="切换至日间模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换至日间模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  ROS 2 节点开发
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Diesel技术笔记" class="md-nav__button md-logo" aria-label="Diesel技术笔记" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Diesel技术笔记
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ROS 2 节点开发
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ROS 2 节点开发
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        先读这个
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、节点的宏观结构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、构造函数的顺序
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、构造函数的顺序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参数必须最先读
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        发布建在订阅之前
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        构造函数里适合打日志
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、yaml 参数怎么走到代码里
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、yaml 参数怎么走到代码里">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        完整路径
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaml_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        yaml 的层级
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#declare_parameter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        declare_parameter 的两种形式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        类型要对上
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、回调是怎么被调用的
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、回调是怎么被调用的">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spin 在做什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        回调耗时会怎样
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        回调里能做什么不能做什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、订阅与发布
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、订阅与发布">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一般形式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#image_transport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        图像话题要用 image_transport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        话题名的前导斜杠
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、消息的构造与发布(自定义Interface)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、消息的构造与发布(自定义Interface)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#header" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        header 的时间戳
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        消息里的嵌套结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        消息字段声明顺序不代表语义顺序
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#launch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        七、launch 文件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、launch 文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#launch_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最小的 launch 文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 的各个字段
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        name 会覆盖代码里的节点名
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parameters 不填会怎样
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参数文件路径为什么要用 API 拿
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        启动多个节点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        命令行传参与条件启动
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        八、本周任务
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        九、排查
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="九、排查">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        节点起不来
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        节点起来了但回调不触发
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        有输出但内容不对
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        先读这个
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、节点的宏观结构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、构造函数的顺序
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、构造函数的顺序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参数必须最先读
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        发布建在订阅之前
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        构造函数里适合打日志
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、yaml 参数怎么走到代码里
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、yaml 参数怎么走到代码里">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        完整路径
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaml_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        yaml 的层级
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#declare_parameter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        declare_parameter 的两种形式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        类型要对上
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、回调是怎么被调用的
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、回调是怎么被调用的">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spin 在做什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        回调耗时会怎样
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        回调里能做什么不能做什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、订阅与发布
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、订阅与发布">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一般形式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#image_transport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        图像话题要用 image_transport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        话题名的前导斜杠
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、消息的构造与发布(自定义Interface)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、消息的构造与发布(自定义Interface)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#header" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        header 的时间戳
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        消息里的嵌套结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        消息字段声明顺序不代表语义顺序
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#launch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        七、launch 文件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、launch 文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#launch_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最小的 launch 文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 的各个字段
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        name 会覆盖代码里的节点名
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parameters 不填会怎样
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参数文件路径为什么要用 API 拿
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        启动多个节点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        命令行传参与条件启动
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        八、本周任务
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        九、排查
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="九、排查">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        节点起不来
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        节点起来了但回调不触发
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        有输出但内容不对
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 align="center">Part of ROS 2</h1>
+
+<p>这份文档讲的是从零写一个 ROS 2 节点需要想清楚的事。</p>
+<p>本文以 <strong>Ubuntu 24.04 + ROS 2 Jazzy</strong> 作为教学主线。当前仓库在
+<strong>Ubuntu 26.04 + ROS 2 Lyrical</strong> 上验证，但节点、话题、参数、launch 和组件化的基本用法一致。
+涉及系统路径时使用 <code>$ROS_DISTRO</code>，因此不需要根据发行版手动改路径。</p>
+<h2 id="_1">先读这个</h2>
+<blockquote>
+<p><strong><a href="https://hello-world-vision.github.io/Vision_Website/induction-training/07-ros2基础/">07-ROS2 基础</a></strong></p>
+<p>那份文档覆盖面很广：环境安装、工作空间与包的组成、节点与话题、参数、
+自定义消息、launch、组件化、tf2、可视化、rosbag。语法层面该有的都有了。</p>
+</blockquote>
+<p>那份文档是<strong>读代码导向</strong>的——它教你怎么读懂一个现成的工程，所以给的都是完整代码片段
+供你对照。本周任务反过来，是<strong>从零写</strong>。写和读需要的东西不一样：</p>
+<p>读代码时你看到 <code>create_subscription</code> 在构造函数里，知道"哦这是在订阅"就够了。
+自己写的时候要回答的是：这行放在构造函数的哪个位置？放错会怎样？订阅和发布谁先建？
+参数什么时候读？回调函数凭什么会被调用？</p>
+<p>这份文档讲的就是这些。语法去看那份，这份讲<strong>怎么排</strong>。</p>
+<h2 id="_2">一、节点的宏观结构</h2>
+<p>先看一个节点的骨架长什么样。下面这个例子跟本周任务无关，是一个把输入数字翻倍再发出去的
+节点，只用来说明结构：</p>
+<pre><code class="language-cpp">namespace my_package {
+
+class DoublerNode : public rclcpp::Node {
+public:
+    explicit DoublerNode(const rclcpp::NodeOptions&amp; options);
+
+private:
+    // 回调函数
+    void number_callback(const std_msgs::msg::Int32::SharedPtr msg);
+
+    // 配置：构造时读一次，之后不变
+    std::string input_topic_;
+    std::string output_topic_;
+    int factor_;
+
+    // 订阅与发布
+    rclcpp::Subscription&lt;std_msgs::msg::Int32&gt;::SharedPtr number_sub_;
+    rclcpp::Publisher&lt;std_msgs::msg::Int32&gt;::SharedPtr result_pub_;
+};
+
+// 构造函数
+DoublerNode::DoublerNode(const rclcpp::NodeOptions&amp; options)
+    : Node(&quot;doubler&quot;, options) {
+    // 1. 读参数
+    input_topic_ = declare_parameter&lt;std::string&gt;(&quot;input_topic&quot;);
+    output_topic_ = declare_parameter&lt;std::string&gt;(&quot;output_topic&quot;);
+    factor_ = declare_parameter&lt;int&gt;(&quot;factor&quot;);
+
+    // 2. 建发布
+    result_pub_ = create_publisher&lt;std_msgs::msg::Int32&gt;(output_topic_, rclcpp::QoS(10));
+
+    // 3. 建订阅
+    number_sub_ = create_subscription&lt;std_msgs::msg::Int32&gt;(
+        input_topic_, rclcpp::QoS(10),
+        std::bind(&amp;DoublerNode::number_callback, this, std::placeholders::_1));
+}
+
+void DoublerNode::number_callback(const std_msgs::msg::Int32::SharedPtr msg) {
+    std_msgs::msg::Int32 result;
+    result.data = msg-&gt;data * factor_;
+    result_pub_-&gt;publish(result);
+}
+
+}  // namespace my_package
+
+#include &quot;rclcpp_components/register_node_macro.hpp&quot;
+RCLCPP_COMPONENTS_REGISTER_NODE(my_package::DoublerNode)
+</code></pre>
+<p>这个结构有几点值得注意。</p>
+<p><strong>类声明和实现可以放在同一个 <code>.cpp</code> 里。</strong> 网站那份文档的例子把实现直接写在类里，
+上面这个例子把它们分开了。ROS 2 节点通常只有一个源文件在用它，没必要单独开头文件——
+本项目的建议做法是把类声明放在 <code>.cpp</code> 顶部，方法实现跟在后面。</p>
+<p><strong>构造函数只有一件事要做：把节点准备好。</strong> 读参数、创建对象、建立订阅发布，
+做完就结束。它不包含任何处理逻辑——处理逻辑在回调里。</p>
+<p><strong>回调是私有成员函数。</strong> 它不会被外部调用，只由 ROS 2 在消息到达时触发。</p>
+<p><strong>成员变量分两类</strong>，建议在声明时就分组：</p>
+<ul>
+<li><strong>配置类</strong>：构造时从参数读一次，之后只读。<code>input_topic_</code>、<code>factor_</code></li>
+<li><strong>运行时对象</strong>：订阅、发布、以及需要跨回调保持的状态</li>
+</ul>
+<p>这两类分开写，读代码的人一眼就知道哪些是"启动时定下的"、哪些是"运行中在用的"。</p>
+<p><strong>末尾的注册宏。</strong> 因为节点要编成 component（为什么见网站那份的第 8 章），
+没有 <code>main()</code>,靠这个宏注册。宏里写的字符串必须和 <code>CMakeLists.txt</code> 里
+<code>rclcpp_components_register_node(... PLUGIN ...)</code> 完全一致。</p>
+<h2 id="_3">二、构造函数的顺序</h2>
+<p>上面例子里标了 1、2、3。这个顺序不是随意的。</p>
+<h3 id="_4">参数必须最先读</h3>
+<p>后面创建的东西要用参数值。话题名从参数来，发布订阅就得等参数读完；阈值从参数来，
+需要阈值的对象就得等参数读完。</p>
+<pre><code class="language-cpp">input_topic_ = declare_parameter&lt;std::string&gt;(&quot;input_topic&quot;);   // 先
+number_sub_ = create_subscription&lt;...&gt;(input_topic_, ...);      // 后
+</code></pre>
+<p>反过来写会用到未初始化的成员变量——<code>std::string</code> 默认是空串，订阅一个空话题名会抛异常。</p>
+<h3 id="_5">发布建在订阅之前</h3>
+<p>这一条是<strong>建议</strong>，不是语法要求，但理由很实际。</p>
+<p>订阅一旦建立，回调随时可能被触发。如果回调里要用发布者，而发布者还没创建，
+就会访问空指针。</p>
+<pre><code class="language-cpp">// 有风险的顺序
+number_sub_ = create_subscription&lt;...&gt;(...);   // 这之后回调可能立刻被调用
+result_pub_ = create_publisher&lt;...&gt;(...);      // 但发布者还没建好
+</code></pre>
+<p>实际上组件容器通常在构造函数返回后才开始分发消息，所以这个顺序大多数时候不出问题。
+但依赖这个时序是没必要的风险，把发布放前面就完全避免了。</p>
+<p>同理，<strong>回调里要用的所有对象，都应该在建订阅之前准备好</strong>。如果你的回调要调用某个
+处理对象，那个对象的构造要排在订阅前面。</p>
+<h3 id="_6">构造函数里适合打日志</h3>
+<pre><code class="language-cpp">RCLCPP_INFO(get_logger(), &quot;节点初始化完成，订阅 %s&quot;, input_topic_.c_str());
+</code></pre>
+<p>这句日志的价值在排查时体现：节点起来了但没反应，第一个问题是"它到底订阅了哪个话题"。
+把关键配置打出来，省得去翻 yaml 猜。</p>
+<p>日志宏有几档：<code>RCLCPP_DEBUG</code> / <code>INFO</code> / <code>WARN</code> / <code>ERROR</code>。构造阶段的初始化信息用
+<code>INFO</code>,出问题用 <code>ERROR</code>。</p>
+<h2 id="yaml">三、yaml 参数怎么走到代码里</h2>
+<p>网站那份讲了语法（<code>declare_parameter</code> 和 yaml 的三层结构），这里补完整的链路。</p>
+<h3 id="_7">完整路径</h3>
+<pre><code>config/params.yaml
+      ↓  ament_auto_package(INSTALL_TO_SHARE config ...)
+install/包名/share/包名/config/params.yaml
+      ↓  launch 里 parameters=[那个路径]
+节点启动时，参数被注入到节点
+      ↓  declare_parameter&lt;T&gt;(&quot;名字&quot;)
+C++ 变量
+</code></pre>
+<p>四个环节，每一环断了都会失败，而且症状不同：</p>
+<table>
+<thead>
+<tr>
+<th>断在哪</th>
+<th>症状</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CMakeLists 没装 config</td>
+<td>launch 里 <code>get_package_share_directory</code> 拼出的路径不存在</td>
+</tr>
+<tr>
+<td>launch 没传 parameters</td>
+<td>节点启动就抛异常，说参数未声明</td>
+</tr>
+<tr>
+<td>yaml 里参数名拼错</td>
+<td>同上，因为节点要的那个名字找不到</td>
+</tr>
+<tr>
+<td><code>declare_parameter</code> 的类型不匹配</td>
+<td>抛类型转换异常</td>
+</tr>
+</tbody>
+</table>
+<h3 id="yaml_1">yaml 的层级</h3>
+<pre><code class="language-yaml">/**:
+  ros__parameters:
+    input_topic: &quot;/some/topic&quot;
+    factor: 2
+</code></pre>
+<p><code>ros__parameters</code> 这一层是固定的关键字，不能省也不能改名。<strong>注意是两个下划线。</strong></p>
+<p>最外层是节点名。写具体节点名（如 <code>doubler:</code>）表示只给那个节点；写 <code>/**:</code> 是通配，
+表示这个文件里的参数给所有节点。本项目用 <code>/**:</code>,这样节点改名不用改 yaml。</p>
+<h3 id="declare_parameter">declare_parameter 的两种形式</h3>
+<pre><code class="language-cpp">// 形式一：不带默认值
+factor_ = declare_parameter&lt;int&gt;(&quot;factor&quot;);
+
+// 形式二：带默认值
+factor_ = declare_parameter&lt;int&gt;(&quot;factor&quot;, 2);
+</code></pre>
+<p>差别在参数缺失时的行为：形式一抛异常，节点起不来；形式二用默认值继续。</p>
+<p><strong>本项目统一用形式一。</strong> 这是刻意的：参数名打错的话，形式二会静默用默认值，
+你看到节点正常启动、行为却不对，排查起来很费时间；形式一直接在启动时报错，
+告诉你哪个参数没找到。</p>
+<p>这个选择的代价是 yaml 必须写全。少一个参数节点就起不来——但这正是你想要的，
+因为它让错误在最早的时刻暴露。</p>
+<h3 id="_8">类型要对上</h3>
+<p><code>declare_parameter&lt;T&gt;</code> 的 <code>T</code> 必须和 yaml 里的字面量类型匹配。</p>
+<pre><code class="language-yaml">threshold: 0.3      # 浮点
+count: 5            # 整数
+enable: true        # 布尔
+name: &quot;something&quot;   # 字符串
+</code></pre>
+<p>常见的坑是整数和浮点：yaml 里写 <code>1</code>(而不是 <code>1.0</code>）会被解析成整数，
+用 <code>declare_parameter&lt;double&gt;("x")</code> 读会抛类型错误。参数本意是浮点时，
+yaml 里就写 <code>1.0</code>。</p>
+<h2 id="_9">四、回调是怎么被调用的</h2>
+<p>这是新人最容易含糊的地方。网站那份文档提了回调的写法，但没讲它凭什么会被调用。</p>
+<h3 id="spin">spin 在做什么</h3>
+<p>你的节点类里没有任何循环，也没有"检查消息到了没"的代码。消息到达时回调就是被调用了——
+这件事由 <code>spin</code> 完成。</p>
+<p>独立进程的节点，<code>main</code> 里是这样：</p>
+<pre><code class="language-cpp">rclcpp::init(argc, argv);
+rclcpp::spin(std::make_shared&lt;MyNode&gt;());   // 这里进入一个循环，直到 Ctrl+C
+rclcpp::shutdown();
+</code></pre>
+<p><code>spin</code> 是一个阻塞循环，它反复做：检查有没有订阅收到新消息 → 有的话调用对应回调 →
+继续等。</p>
+<p>本项目的节点是 component，你不写 <code>main</code>,<code>spin</code> 由容器进程负责。但机制一样：
+<strong>容器在某个线程里跑 spin，消息到了就调你的回调。</strong></p>
+<p>理解这点能解释几件事：</p>
+<ul>
+<li><strong>回调不是"另一个线程在跑"</strong>。默认情况下它就在 spin 所在的线程里被调用</li>
+<li><strong>回调执行期间，这个线程不能处理其他消息</strong>。回调越慢，积压越多</li>
+<li><strong>构造函数返回之后，回调才可能开始</strong>。所以构造函数里可以安全地初始化一切</li>
+</ul>
+<h3 id="_10">回调耗时会怎样</h3>
+<p>假设回调里要跑一次神经网络推理，耗时 50 毫秒，而图像以 100 Hz（每 10 毫秒一帧）到来。</p>
+<p>结果是：你处理完一帧，已经有 5 帧新的到了。处理不过来。</p>
+<p>这种情况下 ROS 2 的行为取决于 QoS 的队列深度：</p>
+<pre><code class="language-cpp">rclcpp::QoS(10)                          // 队列深 10，积压 10 帧
+rclcpp::SensorDataQoS().keep_last(1)     // 只保留最新 1 帧，旧的直接丢
+</code></pre>
+<p>对图像这类实时数据，<strong>丢掉旧帧比排队处理更合理</strong>——你处理一张 500 毫秒前的图像没有意义。
+所以视觉节点的图像订阅通常用 <code>keep_last(1)</code>。</p>
+<p><code>SensorDataQoS()</code> 是一个预设，它除了浅队列还把可靠性设成 <code>BEST_EFFORT</code>（允许丢包，
+换取低延迟）。传感器数据用它，控制指令这类不能丢的用默认的 <code>RELIABLE</code>。</p>
+<p><strong>帧率低于输入频率不一定是 bug。</strong> 本周任务里 CPU 推理跟不上录包的播放速度，
+处理频率只有输入的五分之一左右，这是正常的。</p>
+<h3 id="_11">回调里能做什么不能做什么</h3>
+<p><strong>不要在回调里做无限循环或长时间阻塞</strong>。整个节点会停止响应。</p>
+<p><strong>回调里可以发布消息</strong>，这是最常见的模式：收到输入 → 处理 → 发布输出。</p>
+<p><strong>多个订阅的回调之间可能并发</strong>（取决于容器用的执行器和回调组配置）。如果两个回调
+都读写同一个成员变量，需要考虑加锁。本周任务只有一个订阅，不涉及这个问题。</p>
+<h2 id="_12">五、订阅与发布</h2>
+<h3 id="_13">一般形式</h3>
+<pre><code class="language-cpp">// 发布：模板参数是消息类型
+result_pub_ = create_publisher&lt;std_msgs::msg::Int32&gt;(话题名, QoS);
+result_pub_-&gt;publish(msg);
+
+// 订阅：模板参数是消息类型，第三个参数是回调
+number_sub_ = create_subscription&lt;std_msgs::msg::Int32&gt;(
+    话题名, QoS,
+    std::bind(&amp;DoublerNode::number_callback, this, std::placeholders::_1));
+</code></pre>
+<p>回调的绑定有两种写法，效果一样：</p>
+<pre><code class="language-cpp">// std::bind
+std::bind(&amp;DoublerNode::number_callback, this, std::placeholders::_1)
+
+// lambda
+[this](const std_msgs::msg::Int32::SharedPtr msg) { number_callback(msg); }
+</code></pre>
+<p>回调逻辑短的话直接写在 lambda 里也行；长的话单独写成成员函数更清楚。</p>
+<h3 id="image_transport">图像话题要用 image_transport</h3>
+<p>普通的 <code>create_subscription&lt;sensor_msgs::msg::Image&gt;</code> 只能订阅未压缩图像。</p>
+<p>如果数据源发布的是<strong>压缩图像</strong>（<code>sensor_msgs/CompressedImage</code>）,用普通订阅收不到——
+消息类型都不一样。这时要用 <code>image_transport</code>,它的机制是：</p>
+<pre><code>你订阅 &quot;/camera/image_raw&quot;，传输方式指定 &quot;compressed&quot;
+      ↓
+image_transport 实际去订阅 &quot;/camera/image_raw/compressed&quot;
+      ↓
+收到 CompressedImage，自动解压
+      ↓
+你的回调收到解好的 Image
+</code></pre>
+<p>所以话题名写<strong>不带后缀</strong>的那个，后缀由 <code>image_transport</code> 自己拼。</p>
+<p>这里有个容易踩的坑：如果你把话题名写成带 <code>/compressed</code> 后缀的，
+<code>image_transport</code> 会去订阅 <code>.../compressed/compressed</code>,那个话题不存在。
+结果是<strong>节点正常启动、不报任何错、回调永远不触发</strong>。没有任何诊断信息，很难查。</p>
+<p><code>image_transport</code> 的订阅函数签名和 <code>create_subscription</code> 不太一样，它不是节点的成员函数，
+而是自由函数，需要把节点传进去。具体签名去查头文件
+（<code>/opt/ros/$ROS_DISTRO/include/image_transport/image_transport/image_transport.hpp</code>），
+注意<strong>里面有多个重载，其中旧的已经标记 deprecated</strong>,选新的那个。</p>
+<p>编译时如果看到这样的警告：</p>
+<pre><code>warning: 'image_transport::Subscriber image_transport::create_subscription(rclcpp::Node*, ...)'
+is deprecated: Use create_subscription(RequiredInterfaces node_interfaces, ..., rclcpp::QoS, ...) instead
+</code></pre>
+<p>说明你用的是旧重载。警告不影响运行，但既然它告诉了你新写法，照着改掉更好。
+新重载第一个参数要传<strong>引用</strong>而不是指针，QoS 也直接传 <code>rclcpp::QoS</code> 对象。</p>
+<p>顺带一提，<code>ament_index_cpp::get_package_share_directory</code> 也已经 deprecated，
+提示用 <code>get_package_share_path</code> 代替。网站那份文档和很多现有代码还在用旧的，
+能跑，但编译会告警。</p>
+<h3 id="_14">话题名的前导斜杠</h3>
+<pre><code class="language-cpp">create_publisher&lt;T&gt;(&quot;autoaim/detector/detections&quot;, ...)    // 相对名
+create_publisher&lt;T&gt;(&quot;/autoaim/detector/detections&quot;, ...)   // 绝对名
+</code></pre>
+<p>带斜杠是绝对话题名，不受节点命名空间影响。不带斜杠是相对名，会被命名空间前缀修饰。</p>
+<p>单个节点不加命名空间运行时，两者行为一样，所以这个区别平时看不出来。它在一个节点
+跑多份时才有意义：用相对名 + 不同命名空间，两份节点的话题不会撞车。</p>
+<p>自己发布的话题建议用相对名。订阅别人的话题，如果那个话题是绝对名，就照抄。</p>
+<h2 id="interface">六、消息的构造与发布(自定义Interface)</h2>
+<h3 id="header">header 的时间戳</h3>
+<p>大多数消息有一个 <code>std_msgs/Header</code>:</p>
+<pre><code>std_msgs/Header header
+  builtin_interfaces/Time stamp
+  string frame_id
+</code></pre>
+<p><code>stamp</code> 是这个数据对应的时刻，<code>frame_id</code> 是它所在的坐标系。</p>
+<p>如果你的节点是"收到输入 → 处理 → 发布输出"这种模式，<strong>输出的 header 应该从输入原样
+复制过来</strong>：</p>
+<pre><code class="language-cpp">output.header = msg-&gt;header;    // 对
+output.header.stamp = now();    // 通常错
+</code></pre>
+<p>为什么？<code>stamp</code> 表示的是"这份数据描述的是哪一时刻的世界状态"。一张图像的 stamp 是
+曝光时刻，你基于它算出的检测结果，描述的仍然是曝光那一刻的场景，不是你算完的时刻。</p>
+<p>用 <code>now()</code> 的后果是下游拿不到正确的时间基准。下游节点如果要把两个话题的数据对齐
+（比如图像和检测结果配对），靠的就是 stamp 相等。你改了 stamp，对齐就失效。</p>
+<h3 id="_15">消息里的嵌套结构</h3>
+<p>自定义消息常有数组字段：</p>
+<pre><code>ArmorDetection[] armor_detections
+</code></pre>
+<p>对应的 C++ 用法：</p>
+<pre><code class="language-cpp">Detections msg;
+for (const auto&amp; item : 你的数据) {
+    ArmorDetection d;
+    d.confidence = item.conf;
+    // ... 填其他字段
+    msg.armor_detections.push_back(d);
+}
+pub_-&gt;publish(msg);
+</code></pre>
+<p>数组字段在 C++ 里就是 <code>std::vector</code>。填之前可以 <code>reserve()</code> 预分配，
+避免反复扩容——数据量大时有意义。</p>
+<h3 id="_16">消息字段声明顺序不代表语义顺序</h3>
+<p>这是一类很隐蔽的坑。一个消息可能这样声明：</p>
+<pre><code>geometry_msgs/Point32 tl
+geometry_msgs/Point32 tr
+geometry_msgs/Point32 bl
+geometry_msgs/Point32 br
+</code></pre>
+<p>看起来顺序是 tl → tr → bl → br。但如果你的数据源给的四个点是按另一种顺序排列的
+（比如 tl → bl → br → tr，绕一圈的顺序），那就不能按声明顺序对着填。</p>
+<p><strong>要填对，只能去查文档或读现有代码</strong>,不能看字段名的排列顺序猜。这类约定编译器
+检查不了，填错了程序照样跑，只是结果不对。</p>
+<h2 id="launch">七、launch 文件</h2>
+<p>节点写好了，怎么启动它？</p>
+<p>最直接的是 <code>ros2 run</code>：</p>
+<pre><code class="language-bash">ros2 run 包名 可执行文件名
+</code></pre>
+<p>但这样启动的节点拿不到参数。参数在 yaml 里，得有人把 yaml 喂给它。你可以在命令行
+一个个传：</p>
+<pre><code class="language-bash">ros2 run 包名 可执行文件名 --ros-args -p input_topic:=/in -p factor:=3
+</code></pre>
+<p>参数少的时候还行，十几个参数就没法忍了，而且每次启动都要重敲一遍。</p>
+<p>launch 文件解决的就是这件事：<strong>把"启动哪些节点、每个节点用什么参数"写成一份文件，
+一条命令拉起来。</strong></p>
+<h3 id="launch_1">最小的 launch 文件</h3>
+<p>launch 文件是 Python 脚本，放在包的 <code>launch/</code> 目录下，文件名以 <code>.launch.py</code> 结尾。
+它必须定义一个叫 <code>generate_launch_description</code> 的函数，返回一个 <code>LaunchDescription</code></p>
+<p>然后：</p>
+<pre><code class="language-bash">ros2 launch my_package my.launch.py
+</code></pre>
+<h3 id="node">Node 的各个字段</h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>填什么</th>
+<th>填错的后果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>package</code></td>
+<td>包名，和 <code>package.xml</code> 里 <code>&lt;name&gt;</code> 一致</td>
+<td>报找不到包</td>
+</tr>
+<tr>
+<td><code>executable</code></td>
+<td><code>CMakeLists.txt</code> 里 <code>EXECUTABLE</code> 那一项的值</td>
+<td>报找不到 executable</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>节点运行时的名字</td>
+<td>不报错，但会覆盖代码里的名字，见下</td>
+</tr>
+<tr>
+<td><code>output</code></td>
+<td><code>'screen'</code> 表示日志打到终端</td>
+<td>不填看不到节点的日志</td>
+</tr>
+<tr>
+<td><code>emulate_tty</code></td>
+<td><code>True</code> 保留日志颜色</td>
+<td>不填日志是单色的</td>
+</tr>
+<tr>
+<td><code>parameters</code></td>
+<td>参数来源，列表</td>
+<td>不填则参数未初始化，节点崩</td>
+</tr>
+</tbody>
+</table>
+<p>前两个填错会立刻报错，容易发现。后面几个值得细说。</p>
+<h3 id="name">name 会覆盖代码里的节点名</h3>
+<p>代码里构造 Node 时写了一个名字：</p>
+<pre><code class="language-cpp">: Node(&quot;code_name&quot;, options)
+</code></pre>
+<p>launch 里也能写一个：</p>
+<pre><code class="language-python">Node(..., name='launch_name', ...)
+</code></pre>
+<p><strong>实际生效的是 launch 里的那个。</strong> 我验证过：两处分别写 <code>code_name</code> 和
+<code>launch_name</code>，运行时日志前缀和 <code>get_name()</code> 返回的都是 <code>launch_name</code>。</p>
+<p>这个设计有用——同一份代码要跑两份时（比如接两个相机），用 launch 给它们起不同的名字，
+不用改代码。</p>
+<p>但对你有个实际影响：<strong>用 <code>ros2 node info</code> 查节点时，要用 launch 里的名字。</strong>
+按代码里的名字查会说找不到节点。<code>name</code> 不填的话才用代码里的名字。</p>
+<h3 id="parameters">parameters 不填会怎样</h3>
+<p>如果代码里用的是不带默认值的 <code>declare_parameter&lt;T&gt;("名字")</code>（本项目的做法，
+理由见第三节），launch 里不传 <code>parameters</code>，节点启动就崩：</p>
+<pre><code>terminate called after throwing an instance of
+'rclcpp::exceptions::UninitializedStaticallyTypedParameterException'
+  what():  Statically typed parameter 'greeting' must be initialized.
+[ERROR] [ltest_node-1]: process has died
+</code></pre>
+<p>报错会指出是哪个参数没初始化。看到这个先查两件事：launch 里 <code>parameters</code> 传了吗、
+yaml 里有这个参数吗。</p>
+<p><code>parameters</code> 是列表，可以混用两种形式：</p>
+<pre><code class="language-python">parameters=[
+    params_yaml_path,            # 从 yaml 文件读
+    {'some_param': 42},          # 直接在 launch 里写死
+]
+</code></pre>
+<p>后面的会覆盖前面的同名参数。临时调试时有用：不动 yaml，在 launch 里覆盖一个值。</p>
+<h3 id="api">参数文件路径为什么要用 API 拿</h3>
+<p>这是最容易写错的地方。</p>
+<pre><code class="language-python"># 错
+params = 'src/my_package/config/params.yaml'
+params = '/home/你的名字/ws/src/my_package/config/params.yaml'
+
+# 对
+params = os.path.join(
+    get_package_share_directory('my_package'), 'config', 'params.yaml')
+</code></pre>
+<p>两个错法各有问题。相对路径是相对于<strong>启动命令的工作目录</strong>算的，你从哪个目录敲
+<code>ros2 launch</code> 就从哪算，换个目录就找不到。绝对路径写死了机器和用户名，别人克隆下来
+必然失效。</p>
+<p>正确做法是用 <code>get_package_share_directory()</code>，它返回这个包安装后的 share 目录
+（<code>install/包名/share/包名</code>）。前提是 <code>CMakeLists.txt</code> 里用
+<code>ament_auto_package(INSTALL_TO_SHARE config ...)</code> 把 <code>config</code> 装过去了。</p>
+<p>这里体现了一件事：<strong>程序运行时读的是 <code>install/</code> 下的文件，不是 <code>src/</code> 下的。</strong></p>
+<p>（本项目编译加了 <code>--symlink-install</code>，<code>install/</code> 下的 yaml 是指向 <code>src/</code> 的软链接，
+所以改 yaml 不用重新编译。但路径本身仍然要通过 API 拿。）</p>
+<h3 id="_17">启动多个节点</h3>
+<p><code>LaunchDescription</code> 的参数是一个列表，往里多放几个就是：</p>
+<pre><code class="language-python">return LaunchDescription([
+    Node(package='pkg_a', executable='node_a', output='screen'),
+    Node(package='pkg_b', executable='node_b', output='screen'),
+])
+</code></pre>
+<p>两个节点会同时启动。它们之间如果有话题连接，ROS 2 自己会建立，launch 不用管——
+launch 只负责"把进程拉起来并配好参数"。</p>
+<p>要启动的节点不一定在本包里。系统装的节点也能启动，只要知道它的 <code>package</code> 和
+<code>executable</code> 名字。</p>
+<h3 id="_18">命令行传参与条件启动</h3>
+<p>这两个不是必须的，但知道有它们。</p>
+<p><code>DeclareLaunchArgument</code> 声明一个可以从命令行传的参数：</p>
+<pre><code class="language-python">from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+
+def generate_launch_description():
+    return LaunchDescription([
+        DeclareLaunchArgument('port', default_value='8765'),
+        Node(
+            package='some_pkg',
+            executable='some_node',
+            parameters=[{'port': LaunchConfiguration('port')}],
+        ),
+    ])
+</code></pre>
+<p>启动时覆盖：</p>
+<pre><code class="language-bash">ros2 launch my_package my.launch.py port:=9000
+</code></pre>
+<p><code>IfCondition</code> 让某个节点按条件启动：</p>
+<pre><code class="language-python">from launch.conditions import IfCondition
+
+DeclareLaunchArgument('use_viz', default_value='true'),
+Node(
+    package='some_viz_pkg',
+    executable='viz_node',
+    condition=IfCondition(LaunchConfiguration('use_viz')),
+),
+</code></pre>
+<p>这样 <code>use_viz:=false</code> 就不启动那个节点。用途是把可选的东西做成开关——
+比如可视化工具，调试时要、正式跑的时候不要。</p>
+<h2 id="_19">八、本周任务</h2>
+<p>你要写 <code>src/autoaim_detector/src/detector_node.cpp</code>,一个完整的节点。</p>
+<p><strong>构造函数的顺序</strong>按第二节说的排：参数 → 需要参数的对象 → 发布 → 订阅。</p>
+<p><strong>回调里的处理顺序</strong>要想清楚。推理引擎有固定的调用顺序（见题面），
+顺序错了不会编译报错，但结果不对。</p>
+<p><strong>QoS 选什么</strong>：图像是高频传感器数据，处理跟不上输入频率。第四节讲了这种情况该用哪种。</p>
+<p><strong><code>header</code> 必须透传</strong>，理由见第六节。</p>
+<p><strong>launch 文件也要你写</strong>，放在 <code>src/autoaim_detector/launch/</code> 下，具体要求见那个目录里的
+<code>README.md</code>。参数文件路径务必用 <code>get_package_share_directory</code> 拿，别写死。</p>
+<p>写完之后，自检顺序是这样：</p>
+<pre><code class="language-bash"># 1. 编译过了吗
+./compile.sh
+
+# 2. 节点起得来吗（另开终端先 source install/setup.bash，这一句每个新终端都要）
+ros2 launch autoaim_detector &lt;你的launch文件&gt;
+
+# 3. 订阅发布对不对
+ros2 node info /你的节点名
+
+# 4. 有数据流出来吗
+ros2 topic hz /你发布的话题
+ros2 topic echo /你发布的话题 --once
+</code></pre>
+<p>第 3 步很有用：它会列出节点实际订阅和发布的所有话题。如果你以为订阅了某个话题
+但这里没列出来，说明话题名或订阅代码有问题。注意节点名要用 launch 里 <code>name=</code> 写的那个
+（见第七节），不确定的话先 <code>ros2 node list</code> 看一眼。</p>
+<h2 id="_20">九、排查</h2>
+<h3 id="_21">节点起不来</h3>
+<p><strong>抛参数相关的异常</strong>：yaml 里缺参数，或参数名拼错，或 launch 没把 yaml 传进去。
+对照 <code>params.yaml</code> 和代码里 <code>declare_parameter</code> 的名字逐个核对。</p>
+<p><strong>报找不到 component</strong>：<code>CMakeLists.txt</code> 里 <code>PLUGIN</code> 的值和代码末尾
+<code>RCLCPP_COMPONENTS_REGISTER_NODE</code> 里的不一致。这两处必须完全相同，包括命名空间。</p>
+<p><strong>报找不到 executable</strong>：launch 里 <code>executable=</code> 的值和 <code>CMakeLists.txt</code> 里
+<code>EXECUTABLE</code> 的不一致。</p>
+<h3 id="_22">节点起来了但回调不触发</h3>
+<p>按这个顺序查：</p>
+<pre><code class="language-bash">ros2 topic list                  # 上游话题存在吗
+ros2 topic hz 上游话题名          # 上游真的在发数据吗
+ros2 node info /你的节点名        # 你订阅的话题名对不对
+</code></pre>
+<p>第三步最关键。<code>ros2 node info</code> 列出的是节点<strong>实际</strong>订阅的话题名，如果它和上游发布的
+不一致，就是话题名写错了。订阅图像时还要注意 transport 参数和 <code>/compressed</code> 后缀
+那个坑（第五节）。</p>
+<h3 id="_23">有输出但内容不对</h3>
+<p>用 <code>ros2 topic echo 话题名 --once</code> 看一条完整消息，逐字段核对。常见问题：</p>
+<ul>
+<li>某些字段全是 0：没赋值</li>
+<li>数组是空的：处理逻辑没产出结果，或者没 <code>push_back</code></li>
+<li>时间戳不对：header 没透传</li>
+<li>数值明显离谱：单位或坐标系搞错了</li>
+</ul>
+<hr />
+<p>祝顺利 😊😊😊</p>
+<div align="right">—— 浙江大学 RoboMaster 算法组</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
